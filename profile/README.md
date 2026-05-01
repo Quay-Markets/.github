@@ -33,7 +33,10 @@ LPs deposit USDC, SOL, ETH, BTC and other assets into a shared vault and earn tr
 
 ## Architecture
 
-![Quay Markets architecture](architecture.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="architecture-dark.png">
+  <img src="architecture-light.png" alt="Quay Markets architecture">
+</picture>
 
 ---
 
