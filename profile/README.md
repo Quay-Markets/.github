@@ -40,4 +40,12 @@ LPs deposit USDC, SOL, ETH, BTC and other assets into a shared vault and earn tr
 
 ---
 
+## Code
+
+- [`prop-amm-research`](https://github.com/Quay-Markets/prop-amm-research) — Research and prototypes for the permissionless prop AMM factory and on-chain RFQ primitive.
+- [`tick-book`](https://github.com/Quay-Markets/tick-book) — Tick-based orderbook for Solana — sBPF assembly, multi-maker, 2000 CU quote updates.
+- [`quay-markets-website`](https://github.com/Quay-Markets/quay-markets-website) — Source for [quay.markets](https://quay.markets).
+
+---
+
 [quay.markets](https://quay.markets) · Built on Solana
