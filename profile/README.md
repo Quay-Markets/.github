@@ -35,19 +35,19 @@ LPs deposit USDC, SOL, ETH, BTC and other assets into a shared vault and earn tr
 
 ```mermaid
 flowchart TD
-    subgraph off [" Off-chain "]
-        MM["Market makers"]
-        Relay["Off-chain Relay · TEE attested<br/><i>batches quotes · computes Merkle root</i>"]
-        MM -->|"WebSocket quotes"| Relay
+    subgraph OFFCHAIN [Off-chain]
+        MM[Market makers]
+        Relay[Off-chain Relay<br/>TEE attested]
+        MM -- WebSocket quotes --> Relay
     end
 
-    subgraph on [" On-chain · Solana "]
-        Program["Quay Program<br/><i>shared vault · per-MM Merkle roots · safety bounds</i>"]
-        Consumers["Takers · Aggregators · DEX frontends"]
-        Program -->|"settle instantly"| Consumers
+    subgraph ONCHAIN [On-chain Solana]
+        Program[Quay Program<br/>shared vault, per-MM Merkle roots]
+        Consumers[Takers, Aggregators, DEX frontends]
+        Program -- settle instantly --> Consumers
     end
 
-    Relay ==>|"1 tx / 100ms · 123 markets"| Program
+    Relay -- 1 tx / 100ms, 123 markets --> Program
 ```
 
 ---
