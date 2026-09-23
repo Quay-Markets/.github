@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           repository: Quay-Markets/.github
-          ref: bda98d997298b80ef2a74145afc87804638d1206
+          ref: 29bf73c067dcab9e673f6db81d2757576e11a6df
           path: trusted-policy
           persist-credentials: false
       - name: Check publication policy without executing candidate code
