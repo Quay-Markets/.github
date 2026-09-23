@@ -72,8 +72,11 @@ class Audit:
         full = self.root / path
         if path.is_absolute() or ".." in path.parts:
             raise ValueError("unsafe path")
-        if full.is_symlink() or not full.resolve().is_relative_to(self.root):
-            raise ValueError("policy-relevant symlinks are not supported")
+        resolved = full.resolve()
+        if not resolved.is_relative_to(self.root):
+            raise ValueError("policy-relevant symlink escapes the repository")
+        if resolved != full and resolved.relative_to(self.root) not in self.paths:
+            raise ValueError("policy-relevant symlink targets an untracked file")
         if full.stat().st_size > 2_000_000:
             raise ValueError("policy-relevant file exceeds 2 MB")
         return full.read_text(encoding="utf-8")

@@ -145,6 +145,21 @@ class PolicyTest(unittest.TestCase):
             (root / "Cargo.toml").symlink_to("/etc/passwd")
             self.assertTrue(check.Audit(root, [Path("Cargo.toml")]).run())
 
+    def test_internal_symlink_is_inspected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "run.sh").write_text("npm publish")
+            (root / "release.sh").symlink_to("run.sh")
+            errors = check.Audit(root, [Path("run.sh"), Path("release.sh")]).run()
+            self.assertEqual(len(errors), 2)
+            (root / "run.sh").write_text("cargo test")
+            self.assertFalse(check.Audit(root, [Path("run.sh"), Path("release.sh")]).run())
+            self.assertTrue(check.Audit(root, [Path("release.sh")]).run())
+
+    def test_unimplemented_ecosystem_fails_closed(self):
+        for manifest in ("pom.xml", "new.gemspec", "sub/go.mod"):
+            self.assertTrue(self.audit({manifest: ""}))
+
 
 if __name__ == "__main__":
     unittest.main()

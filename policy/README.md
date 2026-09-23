@@ -28,7 +28,7 @@ Rules:
   request public Cargo tokens, or override the private registry. Releases use
   separately reviewed private infrastructure.
 - New recognized package ecosystems fail until the central policy supports
-  them. Malformed files and policy-relevant symlinks fail closed.
+  them. Malformed files and symlinks outside the tracked repository fail closed.
 
 Repository callers pin the shared workflow to a full commit SHA. The
 organization ruleset must independently select the trusted workflow and target
