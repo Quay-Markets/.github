@@ -1,0 +1,32 @@
+name: Private publishing policy
+
+on:
+  pull_request:
+  merge_group:
+  push:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  private-publishing:
+    name: Private publishing policy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Read the candidate repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          path: candidate
+          persist-credentials: false
+          submodules: false
+      - name: Read the trusted policy
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: Quay-Markets/.github
+          ref: 29bf73c067dcab9e673f6db81d2757576e11a6df
+          path: trusted-policy
+          persist-credentials: false
+      - name: Check publication policy without executing candidate code
+        run: python3 -I trusted-policy/policy/check.py candidate
