@@ -18,7 +18,9 @@ python3 -I policy/check.py /path/to/repository
 Rules:
 
 - Rust packages must explicitly disable publishing, or allow only the `quay`
-  registry with its centrally approved index. Workspace inheritance and nested
+  registry with an exact centrally approved index. The legacy and managed
+  indexes are both approved during migration; no prefix or wildcard is allowed.
+  Workspace inheritance and nested
   Cargo configurations are checked. Downloads from public registries remain
   permitted.
 - Every npm package must set `private: true`.
