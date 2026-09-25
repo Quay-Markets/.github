@@ -18,9 +18,13 @@ import tomllib
 
 
 PRIVATE_CLASSIFIER = "Private :: Do Not Upload"
-# Exact approved index, represented as a digest so public CI tooling need not
-# disclose internal network topology. Changing it requires a central policy review.
-CARGO_INDEX_SHA256 = "dd2db90a42d697b93486f48b1f471b857195b6f152a8a73961687de54d644e6d"
+# Exact approved indexes, represented as digests so public CI tooling need not
+# disclose private network topology. Keep the legacy index during the managed
+# registry migration; changing this set requires central policy review.
+CARGO_INDEX_SHA256 = frozenset({
+    "dd2db90a42d697b93486f48b1f471b857195b6f152a8a73961687de54d644e6d",  # legacy
+    "f827a28855ee0dcd1eb26f80249fe7600f9fba98e6e8285f432b6626a53566cb",  # managed
+})
 MANIFESTS = {"Cargo.toml", "package.json", "pyproject.toml", "setup.py", "setup.cfg"}
 UNSUPPORTED = {"pom.xml", "build.gradle", "build.gradle.kts", "composer.json",
                "go.mod", "mix.exs", "pubspec.yaml", "Package.swift"}
@@ -127,7 +131,7 @@ class Audit:
 
     @staticmethod
     def valid_index(value):
-        return isinstance(value, str) and hashlib.sha256(value.encode()).hexdigest() == CARGO_INDEX_SHA256
+        return isinstance(value, str) and hashlib.sha256(value.encode()).hexdigest() in CARGO_INDEX_SHA256
 
     def cargo_config(self, path):
         data = self.toml(path)
