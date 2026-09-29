@@ -1,8 +1,10 @@
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 
 spec = importlib.util.spec_from_file_location("check", Path(__file__).with_name("check.py"))
@@ -68,6 +70,21 @@ class PolicyTest(unittest.TestCase):
         self.assertTrue(self.audit({
             "sub/.cargo/config": '[registries.quay]\nindex="https://example.org/index"',
         }))
+
+    def test_migration_accepts_each_exact_approved_index_only(self):
+        # Synthetic addresses keep private infrastructure out of public tooling.
+        indexes = ("sparse+https://legacy.example.invalid/index/", "sparse+https://managed.example.invalid/index/")
+        approved = frozenset(hashlib.sha256(value.encode()).hexdigest() for value in indexes)
+        with patch.object(check, "CARGO_INDEX_SHA256", approved):
+            for index in indexes:
+                self.assertFalse(self.audit({
+                    "Cargo.toml": '[package]\npublish=["quay"]',
+                    ".cargo/config.toml": '[registries.quay]\nindex=' + json.dumps(index),
+                }))
+                self.assertFalse(check.Audit.valid_index(index + "other"))
+                self.assertFalse(check.Audit.valid_index(index.rstrip("/")))
+            self.assertFalse(check.Audit.valid_index("sparse+https://index.crates.io/"))
+            self.assertFalse(check.Audit.valid_index(None))
 
     def test_environment_override_rejected(self):
         self.assertTrue(self.audit({
