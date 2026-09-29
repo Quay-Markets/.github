@@ -18,8 +18,8 @@ python3 -I policy/check.py /path/to/repository
 Rules:
 
 - Rust packages must explicitly disable publishing, or allow only the `quay`
-  registry with an exact centrally approved index. The legacy and managed
-  indexes are both approved during migration; no prefix or wildcard is allowed.
+  registry with an exact centrally approved index. The legacy, managed and stable-service
+  indexes are approved during migration; no prefix or wildcard is allowed.
   Workspace inheritance and nested
   Cargo configurations are checked. Downloads from public registries remain
   permitted.

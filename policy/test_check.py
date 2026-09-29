@@ -73,7 +73,7 @@ class PolicyTest(unittest.TestCase):
 
     def test_migration_accepts_each_exact_approved_index_only(self):
         # Synthetic addresses keep private infrastructure out of public tooling.
-        indexes = ("sparse+https://legacy.example.invalid/index/", "sparse+https://managed.example.invalid/index/")
+        indexes = ("sparse+https://legacy.example.invalid/index/", "sparse+https://managed.example.invalid/index/", "sparse+https://packages.example.invalid/index/")
         approved = frozenset(hashlib.sha256(value.encode()).hexdigest() for value in indexes)
         with patch.object(check, "CARGO_INDEX_SHA256", approved):
             for index in indexes:

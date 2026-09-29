@@ -24,6 +24,7 @@ PRIVATE_CLASSIFIER = "Private :: Do Not Upload"
 CARGO_INDEX_SHA256 = frozenset({
     "dd2db90a42d697b93486f48b1f471b857195b6f152a8a73961687de54d644e6d",  # legacy
     "f827a28855ee0dcd1eb26f80249fe7600f9fba98e6e8285f432b6626a53566cb",  # managed
+    "9be9dbb6c94c2f51ad745f5669f24a66c136c732b8a014006f1095873fa8ff66",  # stable service
 })
 MANIFESTS = {"Cargo.toml", "package.json", "pyproject.toml", "setup.py", "setup.cfg"}
 UNSUPPORTED = {"pom.xml", "build.gradle", "build.gradle.kts", "composer.json",
